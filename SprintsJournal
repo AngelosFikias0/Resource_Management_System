@@ -411,10 +411,15 @@
 - Proof of concept helps validate architectural decisions
 
 ### Final Outcomes
-- **Grade:** [To be determined]
-- **GitHub Repository:** https://github.com/AngelosFikias0/Resource_Management_System
-- **YouTube Demo:** [Link to be added]
-- **Notion Workspace:** https://www.notion.so/2bd9c27e8f1180909629d6343b3cd4b7
+EfficienCity RMS taught the team how to move from theory to execution with discipline. Upfront analysis showed you that clear requirements prevent costly rework. 
+Architecture work showed you that microservices demand strict boundaries, strong documentation, and shared technical standards. 
+UX research taught you that municipality and citizen needs differ, so design must stay simple and accessible. 
+Working with Azure, Docker, Spring Boot, Angular, PostgreSQL, and Kafka forced the team to understand how modern distributed systems behave in real environments. 
+The PoC phase taught you how to turn constraints into decisions, how to prioritize essentials, and how to keep momentum when time is tight. 
+Stakeholder feedback showed you the value of continuous validation. The holiday slowdown proved the need for tighter check-ins. 
+Missing AI features highlighted how important early technical planning is. 
+By the end, the team learned how to collaborate under pressure, how to communicate clearly across roles, how to plan sprints that actually deliver, and how to balance innovation with feasibility. 
+The project gave each member sharper technical judgment, stronger ownership, and a clearer understanding of what it takes to ship a real system.
 
 ### Future Recommendations
 If this project were to continue:
