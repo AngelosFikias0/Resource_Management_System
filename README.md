@@ -60,34 +60,7 @@
 
 ## 🏗️ Architecture
 
-The system follows a modular, cloud-native design principle, ensuring horizontal scalability and clear separation of concerns.
-
-```mermaid
-graph TD
-    User((User))
-    LB[Load Balancer / Ingress]
-    
-    subgraph "Frontend Layer"
-        UI[React Client]
-    end
-    
-    subgraph "Backend Layer"
-        API[Spring Boot API Gateway]
-        Service[Core Logic Service]
-    end
-    
-    subgraph "Data & Infra"
-        DB[(PostgreSQL)]
-        Cache[(Redis/Cache)]
-    end
-
-    User --> LB
-    LB --> UI
-    UI --> API
-    API --> Service
-    Service --> DB
-    Service -.-> Cache
-```
+....
 
 ---
 
@@ -176,7 +149,7 @@ Academic supervision provided by the **University of Macedonia**.
 
 | Name | Role | Socials |
 | --- | --- | --- |
-| **Άγγελος Φίκιας** | Software Architect | [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AngelosFikias0) |
+| **Άγγελος Φίκιας** | Software Architect | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/angelos-fikias/) |
 | **Αλέξανδρος Λαζαρίδης** | Design Lead | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](#) |
 | **Βάιος Παλιούρας** | Project Manager | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](#) |
 | **Ιωάννης Τσιρκινίδης** | Tech Research Lead | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](#) |
