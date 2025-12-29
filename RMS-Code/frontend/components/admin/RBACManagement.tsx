@@ -1,16 +1,18 @@
 import { CheckCircle, Edit, Shield, UserPlus, UserX } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "employee" | "approver" | "viewer";
+  role: "admin" | "employee";
   municipality: string;
   status: "active" | "inactive";
 }
 
 export function RBACManagement() {
+  const CURRENT_USER_ID = "4";
+
   const [users, setUsers] = useState<User[]>([
     {
       id: "1",
@@ -18,14 +20,6 @@ export function RBACManagement() {
       email: "g.papadopoulos@athens.gr",
       role: "employee",
       municipality: "Δήμος Αθηναίων",
-      status: "active",
-    },
-    {
-      id: "2",
-      name: "Μαρία Κωνσταντίνου",
-      email: "m.konstantinou@piraeus.gr",
-      role: "approver",
-      municipality: "Δήμος Πειραιά",
       status: "active",
     },
     {
@@ -41,6 +35,7 @@ export function RBACManagement() {
       name: "Ελένη Δημητρίου",
       email: "e.dimitriou@admin.gr",
       role: "admin",
+      // Admins are now explicitly System Wide
       municipality: "Κεντρικό Σύστημα",
       status: "active",
     },
@@ -49,6 +44,19 @@ export function RBACManagement() {
   const [showAddUser, setShowAddUser] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [showSuccess, setShowSuccess] = useState("");
+
+  // Track selected role in form to toggle municipality field
+  const [selectedFormRole, setSelectedFormRole] =
+    useState<User["role"]>("employee");
+
+  // Reset form state when modal opens
+  useEffect(() => {
+    if (editingUser) {
+      setSelectedFormRole(editingUser.role);
+    } else {
+      setSelectedFormRole("employee");
+    }
+  }, [editingUser, showAddUser]);
 
   const roleLabels: Record<
     User["role"],
@@ -59,27 +67,25 @@ export function RBACManagement() {
       color: "bg-red-500/20 text-red-400 border-red-500/50",
       permissions: ["Πλήρης πρόσβαση", "Διαχείριση χρηστών", "System config"],
     },
-    approver: {
-      label: "Εγκριτής",
-      color: "bg-purple-500/20 text-purple-400 border-purple-500/50",
-      permissions: ["Έγκριση αιτήσεων", "Διαχείριση πόρων", "Αναφορές"],
-    },
     employee: {
       label: "Υπάλληλος",
       color: "bg-blue-500/20 text-blue-400 border-blue-500/50",
       permissions: ["Καταγραφή πόρων", "Υποβολή αιτήσεων", "Προβολή"],
     },
-    viewer: {
-      label: "Θεατής",
-      color: "bg-gray-500/20 text-gray-400 border-gray-500/50",
-      permissions: ["Μόνο προβολή"],
-    },
   };
 
   const handleSaveUser = (userData: Partial<User>) => {
+    // If role is admin, force municipality to System, otherwise use form data
+    const finalMunicipality =
+      userData.role === "admin" ? "Κεντρικό Σύστημα" : userData.municipality;
+
     if (editingUser) {
       setUsers(
-        users.map((u) => (u.id === editingUser.id ? { ...u, ...userData } : u))
+        users.map((u) =>
+          u.id === editingUser.id
+            ? { ...u, ...userData, municipality: finalMunicipality! }
+            : u
+        )
       );
       setShowSuccess("updated");
     } else {
@@ -87,8 +93,8 @@ export function RBACManagement() {
         id: Date.now().toString(),
         name: userData.name || "",
         email: userData.email || "",
-        role: userData.role || "viewer",
-        municipality: userData.municipality || "",
+        role: userData.role || "employee",
+        municipality: finalMunicipality || "",
         status: "active",
       };
       setUsers([...users, newUser]);
@@ -100,7 +106,7 @@ export function RBACManagement() {
     setTimeout(() => setShowSuccess(""), 3000);
   };
 
-  const handleDeactivateUser = (userId: string) => {
+  const handleToggleStatus = (userId: string) => {
     setUsers(
       users.map((u) =>
         u.id === userId
@@ -119,7 +125,7 @@ export function RBACManagement() {
   return (
     <div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <h2 className="text-3xl text-white">Διαχείριση Χρηστών & Ρόλων</h2>
+        <h2 className="text-3xl text-white">Διαχείριση Χρηστών</h2>
         <button
           onClick={() => setShowAddUser(true)}
           className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-lg transition-all shadow-lg"
@@ -135,8 +141,8 @@ export function RBACManagement() {
           <div>
             <p className="text-green-400">
               {showSuccess === "created"
-                ? "Χρήστης Δημιουργήθηκε!"
-                : "Χρήστης Ενημερώθηκε!"}
+                ? "Ο Χρήστης Δημιουργήθηκε!"
+                : "Τα στοιχεία ενημερώθηκαν!"}
             </p>
             <p className="text-sm text-green-300">
               Οι αλλαγές καταχωρήθηκαν στο Audit Log.
@@ -161,7 +167,7 @@ export function RBACManagement() {
                   Ρόλος
                 </th>
                 <th className="px-6 py-4 text-left text-sm text-gray-300">
-                  Δήμος
+                  Δήμος / Τομέας
                 </th>
                 <th className="px-6 py-4 text-left text-sm text-gray-300">
                   Κατάσταση
@@ -189,7 +195,12 @@ export function RBACManagement() {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-gray-300">
-                    {user.municipality}
+                    {/* Visual cue for System Admins */}
+                    {user.role === "admin" ? (
+                      <span className="text-orange-300/80 italic">System</span>
+                    ) : (
+                      user.municipality
+                    )}
                   </td>
                   <td className="px-6 py-4">
                     <span
@@ -211,17 +222,25 @@ export function RBACManagement() {
                       >
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button
-                        onClick={() => handleDeactivateUser(user.id)}
-                        className="p-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
-                        title={
-                          user.status === "active"
-                            ? "Απενεργοποίηση"
-                            : "Ενεργοποίηση"
-                        }
-                      >
-                        <UserX className="w-4 h-4" />
-                      </button>
+
+                      {/* Safety: Current admin cannot delete themselves */}
+                      {user.id !== CURRENT_USER_ID && (
+                        <button
+                          onClick={() => handleToggleStatus(user.id)}
+                          className="p-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
+                          title={
+                            user.status === "active"
+                              ? "Απενεργοποίηση"
+                              : "Ενεργοποίηση"
+                          }
+                        >
+                          {user.status === "active" ? (
+                            <UserX className="w-4 h-4" />
+                          ) : (
+                            <UserPlus className="w-4 h-4" />
+                          )}
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -232,7 +251,7 @@ export function RBACManagement() {
       </div>
 
       {/* Role Permissions Info */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
         {Object.entries(roleLabels).map(([role, info]) => (
           <div
             key={role}
@@ -271,8 +290,8 @@ export function RBACManagement() {
                 handleSaveUser({
                   name: formData.get("name") as string,
                   email: formData.get("email") as string,
-                  role: formData.get("role") as User["role"],
                   municipality: formData.get("municipality") as string,
+                  role: formData.get("role") as User["role"],
                 });
               }}
               className="space-y-4"
@@ -297,31 +316,46 @@ export function RBACManagement() {
                   className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-orange-400"
                 />
               </div>
+
               <div>
                 <label className="block text-gray-300 mb-2">Ρόλος</label>
                 <select
                   name="role"
                   required
-                  defaultValue={editingUser?.role}
-                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-orange-400"
+                  value={selectedFormRole}
+                  onChange={(e) =>
+                    setSelectedFormRole(e.target.value as User["role"])
+                  }
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-orange-400 [&>option]:bg-slate-900"
                 >
-                  {Object.entries(roleLabels).map(([role, info]) => (
-                    <option key={role} value={role} className="bg-slate-800">
-                      {info.label}
-                    </option>
-                  ))}
+                  <option value="employee">Υπάλληλος</option>
+                  <option value="admin">Διαχειριστής (System)</option>
                 </select>
               </div>
-              <div>
-                <label className="block text-gray-300 mb-2">Δήμος</label>
-                <input
-                  name="municipality"
-                  type="text"
-                  required
-                  defaultValue={editingUser?.municipality}
-                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-orange-400"
-                />
-              </div>
+
+              {/* Conditional rendering: Only show Municipality if role is NOT admin */}
+              {selectedFormRole !== "admin" && (
+                <div className="animate-fade-in">
+                  <label className="block text-gray-300 mb-2">Δήμος</label>
+                  <input
+                    name="municipality"
+                    type="text"
+                    required
+                    defaultValue={editingUser?.municipality}
+                    placeholder="π.χ. Δήμος Περιστερίου"
+                    className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-orange-400"
+                  />
+                </div>
+              )}
+
+              {/* Informational text for Admins */}
+              {selectedFormRole === "admin" && (
+                <div className="p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm text-blue-300 animate-fade-in">
+                  Οι Διαχειριστές έχουν πρόσβαση σε όλο το σύστημα και δεν
+                  ανήκουν σε συγκεκριμένο Δήμο.
+                </div>
+              )}
+
               <div className="flex gap-2 pt-4">
                 <button
                   type="button"

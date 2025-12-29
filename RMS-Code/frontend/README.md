@@ -1,4 +1,4 @@
-# EfficienCity - Resource Management System
+# EfficienCity - Resource Management System: Frontend
 
 > A modern React/TypeScript application for municipal resource management with role-based interfaces for citizens, municipal employees, and system administrators.
 

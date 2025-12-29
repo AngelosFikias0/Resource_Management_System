@@ -1,1 +1,1 @@
-# EfficienCity - Resource Management System 
+# EfficienCity - Resource Management System: MVP

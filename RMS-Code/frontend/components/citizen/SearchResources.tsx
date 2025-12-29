@@ -1,4 +1,4 @@
-import { Download, FileText, Package, Search } from "lucide-react";
+import { Download, Package, Search } from "lucide-react";
 import { useRef, useState } from "react";
 
 const categories = [
@@ -198,17 +198,7 @@ export function SearchResources() {
           ref={reportRef}
           className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20 mb-6"
         >
-          <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-4 mb-6 flex items-center gap-3">
-            <FileText className="w-5 h-5 text-green-400 flex-shrink-0" />
-            <p className="text-green-300 font-medium">
-              Η αναφορά δημιουργήθηκε επιτυχώς!
-            </p>
-          </div>
-
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <h3 className="text-xl text-white font-semibold">
-              Προεπισκόπηση Αναφοράς
-            </h3>
             <div className="flex gap-2">
               <button
                 onClick={() => handleExport("pdf")}

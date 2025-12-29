@@ -1,1 +1,1 @@
-# EfficienCity - Resource Management System : Deployment
+# EfficienCity - Resource Management System: Deployment
