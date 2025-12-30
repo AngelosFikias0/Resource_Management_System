@@ -18,7 +18,7 @@ interface Resource {
   category: string;
   quantity: number;
   unit: string;
-  status: "available" | "in-use" | "lent";
+  status: "available" | "in-use";
   municipality: string;
   createdAt?: string;
 }
@@ -42,10 +42,6 @@ const STATUS_CONFIG = {
   "in-use": {
     label: "Σε Χρήση",
     color: "bg-blue-500/20 text-blue-400 border-blue-500/50",
-  },
-  lent: {
-    label: "Δανεισμένο",
-    color: "bg-yellow-500/20 text-yellow-400 border-yellow-500/50",
   },
 } as const;
 
@@ -92,7 +88,7 @@ const MOCK_RESOURCES: Resource[] = [
     category: "Μηχανήματα",
     quantity: 3,
     unit: "Τεμάχια",
-    status: "lent",
+    status: "in-use",
     municipality: "Δήμος Αθηναίων",
   },
 ];

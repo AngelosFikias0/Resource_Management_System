@@ -2,7 +2,7 @@ import { BarChart3, LogOut, Menu, Receipt, Search, X } from "lucide-react";
 import { useState } from "react";
 import { SearchResources } from "./citizen/SearchResources";
 import { StatisticsView } from "./citizen/StatisticsView";
-import { TransactionsView } from "./citizen/TransactionsView";
+import TransactionsView from "./citizen/TransactionsView";
 
 interface CitizenDashboardProps {
   onLogout: () => void;
@@ -11,7 +11,7 @@ interface CitizenDashboardProps {
 type View = "search" | "statistics" | "transactions";
 
 export function CitizenDashboard({ onLogout }: CitizenDashboardProps) {
-  const [currentView, setCurrentView] = useState<View>("search");
+  const [currentView, setCurrentView] = useState<View>("statistics");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
