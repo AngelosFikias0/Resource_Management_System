@@ -14,6 +14,7 @@ import OtherMunicipalityResources from "./employee/OtherMunicipalityResources";
 import PendingApprovals from "./employee/PendingApprovals";
 import Reports from "./employee/Reports";
 import { ResourceRegistration } from "./employee/ResourceRegistration";
+import { getUiFromUrl, pushUi, replaceUi } from "../uiHistory";
 
 interface EmployeeDashboardProps {
   onLogout: () => void;
@@ -35,12 +36,24 @@ const Z_INDEX = {
   header: 50,
 } as const;
 
+const DEFAULT_VIEW: View = "register";
+
+function isValidView(v: string | undefined | null): v is View {
+  return (
+    v === "register" ||
+    v === "my-resources" ||
+    v === "other-resources" ||
+    v === "approvals" ||
+    v === "reports"
+  );
+}
+
 export function EmployeeDashboard({
   onLogout,
   userName = "Υπάλληλος Δήμου",
   municipalityName = "Δήμος Αθηναίων",
 }: EmployeeDashboardProps) {
-  const [currentView, setCurrentView] = useState<View>("register");
+  const [currentView, setCurrentView] = useState<View>(DEFAULT_VIEW);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const menuItems = [
@@ -58,6 +71,25 @@ export function EmployeeDashboard({
     },
     { id: "reports" as const, icon: FileText, label: "Αναφορές" },
   ];
+
+  // ✅ Init + Back/Forward sync για tabs (γενικά)
+  useEffect(() => {
+    const sync = () => {
+      const ui = getUiFromUrl();
+      const tab = ui.tab;
+
+      if (isValidView(tab)) {
+        setCurrentView(tab);
+      } else {
+        setCurrentView(DEFAULT_VIEW);
+        replaceUi({ tab: DEFAULT_VIEW });
+      }
+    };
+
+    sync();
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
 
   // Close mobile menu on ESC key
   useEffect(() => {
@@ -87,6 +119,9 @@ export function EmployeeDashboard({
   const handleViewChange = (view: View) => {
     setCurrentView(view);
     closeMobileMenu();
+
+    // ✅ γράφει history entry ώστε Back να πάει στο προηγούμενο “βήμα”
+    pushUi({ tab: view });
   };
 
   return (
@@ -102,102 +137,73 @@ export function EmployeeDashboard({
               <button
                 onClick={toggleMobileMenu}
                 className="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
-                aria-label={
-                  isMobileMenuOpen ? "Κλείσιμο μενού" : "Άνοιγμα μενού"
-                }
-                aria-expanded={isMobileMenuOpen}
-                aria-controls="mobile-sidebar"
               >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                Efficiencity
-              </h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="hidden sm:block text-right">
-                <p className="text-white font-medium">{userName}</p>
-                <p className="text-sm text-gray-300">{municipalityName}</p>
+
+              <div>
+                <h1 className="text-2xl font-bold text-white">{userName}</h1>
+                <p className="text-blue-200">{municipalityName}</p>
               </div>
-              <button
-                onClick={onLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors"
-                aria-label="Αποσύνδεση από το σύστημα"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden sm:inline">Αποσύνδεση</span>
-              </button>
             </div>
+
+            <button
+              onClick={onLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Αποσύνδεση</span>
+            </button>
           </div>
         </div>
       </header>
 
-      <div className="flex max-w-7xl mx-auto">
+      <div className="flex">
         {/* Sidebar */}
         <aside
-          id="mobile-sidebar"
           className={`
-            ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
-            lg:translate-x-0
-            fixed lg:static
-            inset-y-0 left-0
-            w-64
-            bg-white/5 backdrop-blur-lg
-            border-r border-white/10
-            transition-transform duration-300
-            pt-20 lg:pt-0
-          `}
+          fixed lg:static inset-y-0 left-0 w-72
+          bg-white/10 backdrop-blur-lg border-r border-white/20
+          transform transition-transform duration-300 ease-in-out
+          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
           style={{ zIndex: Z_INDEX.sidebar }}
-          aria-label="Πλοήγηση"
         >
-          <nav className="p-4 space-y-2" role="navigation">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentView === item.id;
-              return (
+          <div className="p-6">
+            <nav className="space-y-2">
+              {menuItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleViewChange(item.id)}
-                  className={`
-                    w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
-                    ${
-                      isActive
-                        ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg"
-                        : "text-gray-300 hover:bg-white/10 hover:text-white"
-                    }
-                  `}
-                  aria-current={isActive ? "page" : undefined}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-left ${
+                    currentView === item.id
+                      ? "bg-blue-500/20 text-blue-200 border border-blue-500/30"
+                      : "text-gray-300 hover:bg-white/10 hover:text-white"
+                  }`}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  <item.icon className="w-5 h-5" />
                   <span className="font-medium">{item.label}</span>
                 </button>
-              );
-            })}
-          </nav>
+              ))}
+            </nav>
+          </div>
         </aside>
 
         {/* Mobile overlay */}
         {isMobileMenuOpen && (
           <div
             onClick={closeMobileMenu}
-            className="fixed inset-0 bg-black/50 lg:hidden transition-opacity"
+            className="fixed inset-0 bg-black/50 lg:hidden"
             style={{ zIndex: Z_INDEX.overlay }}
-            aria-hidden="true"
           />
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-73px)]">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="max-w-full">
             {currentView === "register" && <ResourceRegistration />}
             {currentView === "my-resources" && <MyResources />}
-            {currentView === "other-resources" && (
-              <OtherMunicipalityResources />
-            )}
+            {currentView === "other-resources" && <OtherMunicipalityResources />}
             {currentView === "approvals" && <PendingApprovals />}
             {currentView === "reports" && <Reports />}
           </div>

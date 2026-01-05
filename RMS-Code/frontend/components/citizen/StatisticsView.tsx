@@ -12,6 +12,8 @@ interface StatData {
   inUse: number;
   available: number;
   resourcesByCategory: { category: string; count: number }[];
+  totalCompletedTransactions: number;
+  totalExchangedValue: number;
 }
 
 const stats: StatData = {
@@ -25,6 +27,8 @@ const stats: StatData = {
     { category: "Εργαλεία", count: 32 },
     { category: "Υλικά Κατασκευών", count: 13 },
   ],
+  totalCompletedTransactions: 132,
+  totalExchangedValue: 875430.5,
 };
 
 export function StatisticsView() {
@@ -50,8 +54,14 @@ export function StatisticsView() {
       pdf.text("Γενικά Στατιστικά:", 14, 45);
       pdf.setFontSize(10);
       pdf.text(`Συνολικοί Πόροι: ${stats.totalResources}`, 14, 52);
+      pdf.text(`Συνολικές Ολοκληρωμένες Ενέργειες: ${stats.totalCompletedTransactions}`, 14, 59);
+      pdf.text(
+        `Συνολική Αξία Ανταλλαγών: ${new Intl.NumberFormat("el-GR", { style: "currency", currency: "EUR" }).format(stats.totalExchangedValue)}`,
+        14,
+        66
+      );
       pdf.text(`Σε Χρήση: ${stats.inUse}`, 14, 59);
-      pdf.text(`Διαθέσιμοι: ${stats.available}`, 14, 66);
+      pdf.text(`Διαθέσιμοι: ${stats.available}`, 14, 73);
 
       // Add category breakdown
       pdf.setFontSize(12);
@@ -78,6 +88,8 @@ export function StatisticsView() {
         { Μέτρηση: "Συνολικοί Πόροι", Αξία: stats.totalResources },
         { Μέτρηση: "Σε Χρήση", Αξία: stats.inUse },
         { Μέτρηση: "Διαθέσιμοι", Αξία: stats.available },
+        { Μέτρηση: "Ολοκληρωμένες Ενέργειες", Αξία: stats.totalCompletedTransactions },
+        { Μέτρηση: "Συνολική Αξία Ανταλλαγών", Αξία: stats.totalExchangedValue },
       ];
 
       const categoryData = stats.resourcesByCategory.map((item) => ({
@@ -159,7 +171,7 @@ export function StatisticsView() {
               <h4 className="text-lg text-white mb-4 font-semibold">
                 Γενικά Στατιστικά
               </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
                 <div className="bg-white/5 rounded-lg p-4 border border-white/10">
                   <div className="flex items-center gap-2 mb-2">
                     <Package className="w-5 h-5 text-purple-400" />
@@ -187,6 +199,26 @@ export function StatisticsView() {
                   </div>
                   <p className="text-3xl text-green-400 font-bold">
                     {stats.available}
+                  </p>
+                </div>
+
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <FileText className="w-5 h-5 text-yellow-400" />
+                    <p className="text-gray-300 text-sm">Ολοκληρωμένες Ενέργειες</p>
+                  </div>
+                  <p className="text-3xl text-yellow-400 font-bold">
+                    {stats.totalCompletedTransactions}
+                  </p>
+                </div>
+
+                <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className="w-5 h-5 text-emerald-400" />
+                    <p className="text-gray-300 text-sm">Συνολική Αξία Ανταλλαγών</p>
+                  </div>
+                  <p className="text-3xl text-emerald-400 font-bold">
+                    {new Intl.NumberFormat("el-GR", { style: "currency", currency: "EUR" }).format(stats.totalExchangedValue)}
                   </p>
                 </div>
               </div>
@@ -232,7 +264,7 @@ export function StatisticsView() {
       {!showReport && (
         <>
           {/* General Statistics */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-6 mb-8">
             <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
               <div className="flex items-center gap-3 mb-2">
                 <Package className="w-8 h-8 text-purple-400" />
@@ -260,6 +292,26 @@ export function StatisticsView() {
               </div>
               <p className="text-4xl bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
                 {stats.available}
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
+              <div className="flex items-center gap-3 mb-2">
+                <FileText className="w-8 h-8 text-yellow-400" />
+                <p className="text-gray-300">Ολοκληρωμένες Ενέργειες</p>
+              </div>
+              <p className="text-4xl bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent">
+                {stats.totalCompletedTransactions}
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20">
+              <div className="flex items-center gap-3 mb-2">
+                <TrendingUp className="w-8 h-8 text-emerald-400" />
+                <p className="text-gray-300">Συνολική Αξία Ανταλλαγών</p>
+              </div>
+              <p className="text-4xl bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                {new Intl.NumberFormat("el-GR", { style: "currency", currency: "EUR" }).format(stats.totalExchangedValue)}
               </p>
             </div>
           </div>

@@ -17,6 +17,7 @@ interface Resource {
   name: string;
   category: string;
   quantity: number;
+  purchasePrice?: number;
   unit: string;
   status: "available" | "in-use";
   municipality: string;
@@ -51,6 +52,7 @@ const MOCK_RESOURCES: Resource[] = [
     name: "Εκσκαφέας Κοματσού",
     category: "Μηχανήματα",
     quantity: 2,
+    purchasePrice: 45000,
     unit: "Τεμάχια",
     status: "available",
     municipality: "Δήμος Αθηναίων",
@@ -60,6 +62,7 @@ const MOCK_RESOURCES: Resource[] = [
     name: "Φορτηγό Mercedes",
     category: "Οχήματα",
     quantity: 5,
+    purchasePrice: 30000,
     unit: "Τεμάχια",
     status: "in-use",
     municipality: "Δήμος Αθηναίων",
@@ -69,6 +72,7 @@ const MOCK_RESOURCES: Resource[] = [
     name: "Αντλία Νερού",
     category: "Εξοπλισμός",
     quantity: 10,
+    purchasePrice: 1200,
     unit: "Τεμάχια",
     status: "available",
     municipality: "Δήμος Αθηναίων",
@@ -78,6 +82,7 @@ const MOCK_RESOURCES: Resource[] = [
     name: "Τσιμέντο",
     category: "Υλικά Κατασκευών",
     quantity: 500,
+    purchasePrice: 4.5,
     unit: "Κιλά",
     status: "available",
     municipality: "Δήμος Αθηναίων",
@@ -87,6 +92,7 @@ const MOCK_RESOURCES: Resource[] = [
     name: "Γεννήτρια 50KW",
     category: "Μηχανήματα",
     quantity: 3,
+    purchasePrice: 15000,
     unit: "Τεμάχια",
     status: "in-use",
     municipality: "Δήμος Αθηναίων",
@@ -156,8 +162,13 @@ export function MyResources() {
     if (editFormData) {
       setEditFormData({
         ...editFormData,
-        [name]: name === "quantity" ? parseInt(value) || 0 : value,
-      });
+        [name]:
+          name === "quantity"
+            ? parseInt(value) || 0
+            : name === "purchasePrice"
+            ? parseFloat(value) || 0
+            : value,
+      } as Resource);
       if (editError) setEditError(null);
     }
   };
@@ -170,6 +181,12 @@ export function MyResources() {
       return "Η ποσότητα πρέπει να είναι τουλάχιστον 1";
     if (!editFormData.unit) return "Η μονάδα είναι υποχρεωτική";
     if (!editFormData.status) return "Η κατάσταση είναι υποχρεωτική";
+    if (
+      editFormData.purchasePrice === undefined ||
+      Number.isNaN(editFormData.purchasePrice) ||
+      editFormData.purchasePrice <= 0
+    )
+      return "Η τιμή αγοράς είναι υποχρεωτική και πρέπει να είναι μεγαλύτερη του 0";
     return null;
   };
 
@@ -394,7 +411,7 @@ export function MyResources() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                   <div>
                     <p className="text-sm text-gray-400 mb-1">Ποσότητα</p>
                     <p className="text-white font-medium">
@@ -405,6 +422,17 @@ export function MyResources() {
                     <p className="text-sm text-gray-400 mb-1">Δήμος</p>
                     <p className="text-white font-medium truncate">
                       {resource.municipality}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-400 mb-1">Τιμή Αγοράς</p>
+                    <p className="text-white font-medium">
+                      {resource.purchasePrice !== undefined
+                        ? new Intl.NumberFormat("el-GR", {
+                            style: "currency",
+                            currency: "EUR",
+                          }).format(resource.purchasePrice)
+                        : "—"}
                     </p>
                   </div>
                 </div>
@@ -564,6 +592,31 @@ export function MyResources() {
                       ))}
                     </select>
                   </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="edit-purchasePrice"
+                    className="block text-gray-300 mb-2 font-medium text-sm"
+                  >
+                    Τιμή Αγοράς (€) <span className="text-red-400">*</span>
+                  </label>
+                  <input
+                    id="edit-purchasePrice"
+                    name="purchasePrice"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={
+                      editFormData.purchasePrice !== undefined
+                        ? String(editFormData.purchasePrice)
+                        : ""
+                    }
+                    onChange={handleEditInputChange}
+                    disabled={isSaving}
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-colors disabled:opacity-50"
+                    placeholder="π.χ. 1200.00"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

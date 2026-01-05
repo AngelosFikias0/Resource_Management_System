@@ -1,0 +1,102 @@
+/* Text size */
+html[data-text-size="default"] { font-size: 16px; }
+html[data-text-size="large"] { font-size: 18px; }
+html[data-text-size="xl"] { font-size: 20px; }
+
+/* High contrast */
+html.a11y-contrast {
+  filter: contrast(1.25);
+}
+
+/* Reduced motion */
+html.a11y-reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Larger targets */
+html.a11y-large-targets button,
+html.a11y-large-targets a,
+html.a11y-large-targets input,
+html.a11y-large-targets select {
+  min-height: 44px;
+}
+
+/* Underline links */
+html.a11y-underline-links a {
+  text-decoration: underline !important;
+}
+
+/* =========================
+   Accessibility – Text size
+   ========================= */
+html[data-text-size="default"] {
+  font-size: 16px;
+}
+
+html[data-text-size="large"] {
+  font-size: 18px;
+}
+
+html[data-text-size="xl"] {
+  font-size: 20px;
+}
+
+/* =========================
+   Accessibility – High contrast
+   ========================= */
+html.a11y-contrast {
+  filter: contrast(1.35) saturate(1.15);
+}
+
+/* =========================
+   Accessibility – Reduce motion
+   ========================= */
+html.a11y-reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* =========================
+   Accessibility – LARGE targets (κουμπιά)
+   ========================= */
+html.a11y-large-targets button,
+html.a11y-large-targets a,
+html.a11y-large-targets input,
+html.a11y-large-targets select,
+html.a11y-large-targets textarea {
+  min-height: 56px;          /* ⬅ αισθητά μεγαλύτερα */
+  padding: 0.9rem 1.1rem;   /* ⬅ πιο “χοντρά” */
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+/* Icons μέσα σε buttons */
+html.a11y-large-targets button svg,
+html.a11y-large-targets a svg {
+  width: 1.35em;
+  height: 1.35em;
+}
+
+/* Gap για icon + text */
+html.a11y-large-targets button {
+  gap: 0.65rem;
+}
+
+/* =========================
+   Accessibility – Underline links
+   ========================= */
+html.a11y-underline-links a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+/* =========================
+   Accessibility – Focus (keyboard)
+   ========================= */
+:focus-visible {
+  outline: 3px solid #38bdf8;
+  outline-offset: 2px;
+}

@@ -25,6 +25,7 @@ interface FormData {
   category: string;
   description: string;
   unit: string;
+  purchasePrice: string;
 }
 
 const INITIAL_FORM_STATE: FormData = {
@@ -33,6 +34,7 @@ const INITIAL_FORM_STATE: FormData = {
   category: "",
   description: "",
   unit: "",
+  purchasePrice: "",
 };
 
 export function ResourceRegistration() {
@@ -67,6 +69,9 @@ export function ResourceRegistration() {
     if (!formData.unit) {
       return "Η μονάδα μέτρησης είναι υποχρεωτική";
     }
+    if (!formData.purchasePrice || parseFloat(formData.purchasePrice) <= 0) {
+      return "Η τιμή αγοράς είναι υποχρεωτική και πρέπει να είναι μεγαλύτερη του 0";
+    }
     return null;
   };
 
@@ -90,7 +95,14 @@ export function ResourceRegistration() {
       // Simulate API delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      console.log("Saving resource:", formData);
+      // Include numeric price when sending to API
+      const payload = {
+        ...formData,
+        purchasePrice: parseFloat(formData.purchasePrice),
+        quantity: parseInt(formData.quantity, 10),
+      };
+
+      console.log("Saving resource:", payload);
 
       // Success
       setShowSuccess(true);
@@ -161,7 +173,7 @@ export function ResourceRegistration() {
       {/* Form */}
       <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 sm:p-8 border border-white/20">
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Name Input */}
             <div>
               <label
@@ -269,6 +281,29 @@ export function ResourceRegistration() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Purchase Price */}
+            <div>
+              <label
+                htmlFor="purchasePrice"
+                className="block text-gray-300 mb-2 font-medium"
+              >
+                Τιμή Αγοράς (€) <span className="text-red-400">*</span>
+              </label>
+              <input
+                id="purchasePrice"
+                name="purchasePrice"
+                type="number"
+                min="0"
+                step="0.01"
+                required
+                value={formData.purchasePrice}
+                onChange={handleInputChange}
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                placeholder="π.χ. 1200.00"
+              />
             </div>
           </div>
 
