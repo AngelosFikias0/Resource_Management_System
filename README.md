@@ -2,14 +2,14 @@
 
 <div align="center">
 
-**A centralized platform for municipal resource management and inter‑municipality collaboration.**
+**A centralized platform for municipal resource management and inter-municipality collaboration.**
 
 [![GitHub Stars](https://img.shields.io/github/stars/AngelosFikias0/Resource_Management_System?style=for-the-badge&logo=github&color=yellow)](https://github.com/AngelosFikias0/Resource_Management_System/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/AngelosFikias0/Resource_Management_System?style=for-the-badge&logo=github&color=orange)](https://github.com/AngelosFikias0/Resource_Management_System/network/members)
 [![Issues](https://img.shields.io/github/issues/AngelosFikias0/Resource_Management_System?style=for-the-badge&logo=github&color=red)](https://github.com/AngelosFikias0/Resource_Management_System/issues)
 [![License](https://img.shields.io/github/license/AngelosFikias0/Resource_Management_System?style=for-the-badge&color=blue)](LICENSE)
 
-[Overview](#-overview) • [Features](#-features) • [Architecture](#-architecture) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [Team](#-team)
+[Overview](#-overview) • [Features](#-features) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [Team](#-team)
 
 </div>
 
@@ -17,25 +17,25 @@
 
 ## 📖 Overview
 
-**EfficienCity RMS** is a full‑stack ecosystem designed to modernize how municipalities register, allocate, share, and audit public resources. By replacing fragmented, manual processes with a single source of truth, the platform improves asset utilization, reduces operational costs, and fosters transparency between local authorities and citizens.
+**EfficienCity RMS** is a full-stack ecosystem designed to modernize how municipalities register, allocate, share, and audit public resources. By replacing fragmented, manual processes with a single source of truth, the platform improves asset utilization, reduces operational costs, and fosters transparency between local authorities and citizens.
 
 ### Core Outcomes
 
-- 👁️ **Real-time Visibility:** Instant tracking of municipal assets and availability.
-- 🤝 **Collaboration:** Seamless inter‑municipality resource sharing.
-- 🛡️ **Accountability:** Immutable audit trails for every transaction.
-- 📊 **Intelligence:** Data-driven decision-making via utilization analytics.
+- 👁️ **Real-time Visibility** – Instant tracking of municipal assets and availability
+- 🤝 **Collaboration** – Seamless inter-municipality resource sharing
+- 🛡️ **Accountability** – Immutable audit trails for every transaction
+- 📊 **Intelligence** – Data-driven decision-making via utilization analytics
 
 ---
 
 ## 🧩 The Challenge vs. The Solution
 
-| The Problem                                                           | The EfficienCity Solution                                                              |
-| :-------------------------------------------------------------------- | :------------------------------------------------------------------------------------- |
-| **Fragmented Tools:** Disconnected spreadsheets and manual workflows. | **Centralized Registry:** A unified digital inventory for all assets.                  |
-| **Slow Procurement:** Lengthy approval cycles and idle resources.     | **Automated Workflows:** Structured requests with instant status updates.              |
-| **Opacity:** Limited accountability and public trust.                 | **Transparency Portal:** Public dashboards and verifiable transaction history.         |
-| **Silos:** Minimal cross‑municipality cooperation.                    | **Federated Sharing:** A network layer allowing municipalities to support one another. |
+| The Problem                                                          | The EfficienCity Solution                                                             |
+| :------------------------------------------------------------------- | :------------------------------------------------------------------------------------ |
+| **Fragmented Tools:** Disconnected spreadsheets and manual workflows | **Centralized Registry:** A unified digital inventory for all assets                  |
+| **Slow Procurement:** Lengthy approval cycles and idle resources     | **Automated Workflows:** Structured requests with instant status updates              |
+| **Opacity:** Limited accountability and public trust                 | **Transparency Portal:** Public dashboards and verifiable transaction history         |
+| **Silos:** Minimal cross-municipality cooperation                    | **Federated Sharing:** A network layer allowing municipalities to support one another |
 
 ---
 
@@ -43,39 +43,22 @@
 
 ### 🏛️ For Municipal Authorities
 
-- **Lifecycle Tracking:** Full CRUD operations for resource registration.
-- **Inter-Municipality Requests:** Borrow or lend resources seamlessly between districts.
-- **Approval Workflows:** Role-based logic for reviewing and approving allocations.
-- **Analytics:** KPI dashboards for demand forecasting and usage reports.
+- **Lifecycle Tracking** – Full CRUD operations for resource registration
+- **Inter-Municipality Requests** – Borrow or lend resources seamlessly between districts
+- **Approval Workflows** – Role-based logic for reviewing and approving allocations
+- **Analytics** – KPI dashboards for demand forecasting and usage reports
 
 ### 👤 For Citizens
 
-- **Open Data Dashboard:** View aggregated data on public spending and resource usage.
-- **Transparency:** Verify transaction histories to ensure fair usage.
-- **Accessibility:** Mobile-friendly interface for on-the-go access.
+- **Open Data Dashboard** – View aggregated data on public spending and resource usage
+- **Transparency** – Verify transaction histories to ensure fair usage
+- **Accessibility** – Mobile-friendly interface for on-the-go access
 
 ### 🛠️ For Administrators
 
-- **RBAC:** Granular User and Role management.
-- **Observability:** System health monitoring via Prometheus/Grafana.
-- **Security:** Automated backup and recovery protocols.
-
----
-
-## <a id="architecture"></a>🏗 Architecture
-
-EfficienCity RMS follows a modern three-tier architecture designed for scalability and maintainability:
-
-### System Design
-
-- x
-
-### Key Components
-
-- **Frontend Layer:** React-based SPA with TypeScript for type safety and TailwindCSS for responsive design.
-- **API Layer:** RESTful Spring Boot services with JWT authentication and role-based access control.
-- **Data Layer:** PostgreSQL for persistent storage, Redis for caching and session management.
-- **Monitoring:** Prometheus metrics collection with Grafana dashboards for real-time observability.
+- **RBAC** – Granular user and role management
+- **Observability** – System health monitoring via Prometheus/Grafana
+- **Security** – Automated backup and recovery protocols
 
 ---
 
@@ -115,21 +98,21 @@ EfficienCity RMS follows a modern three-tier architecture designed for scalabili
 
 ### Prerequisites
 
-- **Node.js:** v18+
-- **Java:** JDK 17+
-- **Docker:** v20+
-- **PostgreSQL:** v14+
+- **Node.js** v18+
+- **Java** JDK 17+
+- **Docker** v20+
+- **PostgreSQL** v14+
 
-### 🔧 Installation
+### Installation
 
-1. **Clone the repository**
+#### **1. Clone the repository**
 
 ```bash
 git clone https://github.com/AngelosFikias0/Resource_Management_System.git
 cd Resource_Management_System
 ```
 
-2. **Environment Setup**
+#### **2. Environment Setup**
 
 Create a `.env` file in the root directory:
 
@@ -143,15 +126,15 @@ JWT_SECRET=your_super_secret_key_change_me
 JWT_EXPIRATION=86400
 ```
 
-3. **Run via Docker (Recommended)**
+#### **3. Run via Docker (Recommended)**
 
 ```bash
 docker-compose up -d --build
 ```
 
-4. **Manual Execution**
+#### **4. Manual Execution**
 
-_Backend:_
+Backend:
 
 ```bash
 cd backend
@@ -159,7 +142,7 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
-_Frontend:_
+Frontend:
 
 ```bash
 cd frontend
@@ -167,7 +150,7 @@ npm install
 npm start
 ```
 
-Access the application at `http://localhost:3000`.
+Access the application at `http://localhost:3000`
 
 ---
 
@@ -175,14 +158,12 @@ Access the application at `http://localhost:3000`.
 
 Academic supervision provided by the **University of Macedonia**.
 
-| Name                     | Role               | Socials                                                                                                                                                                                                                                                                   |
-| ------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Άγγελος Φίκιας**       | Software Architect | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/angelos-fikias/)                                                                                                                |
-| **Αλέξανδρος Λαζαρίδης** | Design Lead        | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/%CE%B1%CE%BB%CE%AD%CE%BE%CE%B1%CE%BD%CE%B4%CF%81%CE%BF%CF%82-%CE%BB%CE%B1%CE%B6%CE%B1%CF%81%CE%AF%CE%B4%CE%B7%CF%82-6b4a33278/) |
-| **Βάιος Παλιούρας**      | Project Manager    | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/vaios-paliouras-061828276/)                                                                                                     |
-| **Ιωάννης Τσιρκινίδης**  | Tech Research Lead | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/giannis-tsirkinidis-209765294/)                                                                                                 |
-
----
+| Name                     | Role                | Socials                                                                                                                                                                                                                                                                   |
+| ------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Άγγελος Φίκιας**       | Solutions Architect | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/angelos-fikias/)                                                                                                                |
+| **Αλέξανδρος Λαζαρίδης** | Design Lead         | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/%CE%B1%CE%BB%CE%AD%CE%BE%CE%B1%CE%BD%CE%B4%CF%81%CE%BF%CF%82-%CE%BB%CE%B1%CE%B6%CE%B1%CF%81%CE%AF%CE%B4%CE%B7%CF%82-6b4a33278/) |
+| **Βάιος Παλιούρας**      | Project Manager     | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/vaios-paliouras-061828276/)                                                                                                     |
+| **Ιωάννης Τσιρκινίδης**  | Tech Research Lead  | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/giannis-tsirkinidis-209765294/)                                                                                                 |
 
 ## 🤝 Contributing
 
@@ -194,22 +175,14 @@ Contributions are what make the open-source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
----
-
 ## 📄 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
----
-
 ## 📧 Contact
 
-Project Link: [https://github.com/AngelosFikias0/Resource_Management_System](https://github.com/AngelosFikias0/Resource_Management_System)
+**Project Link:** [https://github.com/AngelosFikias0/Resource_Management_System](https://github.com/AngelosFikias0/Resource_Management_System)
 
 ---
 
-<div align="center">
-
-Made with ❤️ by the EfficienCity Team
-
-</div>
+<div align="center"> Made with ❤️ by the EfficienCity Team </div>
