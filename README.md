@@ -1,4 +1,4 @@
-# EfficienCity RMS
+# EfficienCity Resoruce Management System
 
 <div align="center">
 
