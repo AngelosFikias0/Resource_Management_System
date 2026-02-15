@@ -1,4 +1,4 @@
-# EfficienCity Resoruce Management System
+# EfficienCity Resource Management System
 
 <div align="center">
 
